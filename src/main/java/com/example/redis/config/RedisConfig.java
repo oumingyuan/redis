@@ -10,16 +10,12 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 /**
  * redis配置类
- *
- * @author ZENG.XIAO.YAN
- * @date 2018年6月6日
  */
 @Configuration
 public class RedisConfig {
-
-
     /**
      * redis 配置
      *

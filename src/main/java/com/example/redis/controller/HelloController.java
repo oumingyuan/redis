@@ -1,32 +1,57 @@
 package com.example.redis.controller;
 
-import com.example.redis.util.RedisUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
+@SuppressWarnings("ALL")
 @RestController
 public class HelloController {
 
 
-    private final RedisUtil redisUtil;
-
-    public HelloController(RedisUtil redisUtil) {
-        this.redisUtil = redisUtil;
-    }
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
+     * Redis 字符串(String)
      * 设置redis 的值
      *
      * @param value 值
-     * @return 设置值是否成功
      */
     @RequestMapping("/set")
-    public boolean set(String value) {
+    public Map<String, String> set(String key, String value) {
+//        return redisUtil.set(key, value);
 
-        System.out.println(value);
+        Map<String, String> map = new HashMap<>();
+        map.put(key, value);
+        redisTemplate.opsForValue().set(key, value);
+        return map;
 
-        return redisUtil.set(value, value);
 
+    }
+
+    @RequestMapping("/setMap")
+    public Map<String, Map<String, String>> setMap(String key, Map<String, String> valueMap) {
+//        return redisUtil.set(key, value);
+
+        Map<String, Map<String, String>> resultMap = new HashMap<>();
+//        Map<String, String> VA
+        resultMap.put(key, valueMap);
+//        redisTemplate.opsForValue().set(key, value);
+        redisTemplate.opsForHash().putAll(key, valueMap);
+        return resultMap;
+
+
+    }
+
+    @RequestMapping("/get")
+    public Object get(String key) {
+//        System.out.println(value);
+        return redisTemplate.opsForValue().get(key);
     }
 
 }
