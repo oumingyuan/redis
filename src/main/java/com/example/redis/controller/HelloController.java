@@ -2,11 +2,14 @@ package com.example.redis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("ALL")
 @RestController
@@ -18,40 +21,65 @@ public class HelloController {
 
     /**
      * Redis 字符串(String)
-     * 设置redis 的值
+     * Redis 字符串数据类型的相关命令用于管理 redis 字符串值
      *
      * @param value 值
      */
     @RequestMapping("/set")
     public Map<String, String> set(String key, String value) {
-//        return redisUtil.set(key, value);
-
         Map<String, String> map = new HashMap<>();
         map.put(key, value);
         redisTemplate.opsForValue().set(key, value);
         return map;
-
-
     }
 
-    @RequestMapping("/setMap")
-    public Map<String, Map<String, String>> setMap(String key, Map<String, String> valueMap) {
-//        return redisUtil.set(key, value);
-
-        Map<String, Map<String, String>> resultMap = new HashMap<>();
-//        Map<String, String> VA
-        resultMap.put(key, valueMap);
-//        redisTemplate.opsForValue().set(key, value);
-        redisTemplate.opsForHash().putAll(key, valueMap);
-        return resultMap;
-
-
-    }
 
     @RequestMapping("/get")
     public Object get(String key) {
-//        System.out.println(value);
-        return redisTemplate.opsForValue().get(key);
+
+        ValueOperations<String, Object> stringObjectValueOperations = redisTemplate.opsForValue();
+        return stringObjectValueOperations.get(key);
     }
+
+    /**
+     * Redis 哈希(Hash)
+     * Redis hash 是一个string类型的field和value的映射表，hash特别适合用于存储对象。
+     *
+     * @param key
+     * @param valueMap
+     */
+    @RequestMapping("/setMap")
+    public void setMap(String key, @RequestBody Map<String, String> valueMap) {
+        System.out.println(key);
+        System.out.println(valueMap);
+        redisTemplate.opsForHash().putAll(key, valueMap);
+    }
+
+    @RequestMapping("/getMap")
+    public Map<Object, Object> getMap(String key) {
+        return redisTemplate.opsForHash().entries(key);
+    }
+
+    /**
+     * @param key
+     * @param stringSet
+     * @return
+     */
+    @RequestMapping("/setSet")
+    public Set<String> setSet(String key, @RequestBody Set<String> stringSet) {
+        redisTemplate.opsForSet().add(key, stringSet);
+        return stringSet;
+    }
+
+    //redisTemplate.opsForSet().add(key, values);
+
+    @RequestMapping("/getSet")
+    public Set<Object> getSet(String key) {
+//        redisTemplate.opsForSet().add(key, stringSet);
+        return redisTemplate.opsForSet().members(key);
+    }
+
+    //return redisTemplate.opsForSet().members(key);
+
 
 }
