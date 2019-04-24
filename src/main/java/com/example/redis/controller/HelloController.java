@@ -71,15 +71,9 @@ public class HelloController {
         return stringSet;
     }
 
-    //redisTemplate.opsForSet().add(key, values);
-
     @RequestMapping("/getSet")
     public Set<Object> getSet(String key) {
-//        redisTemplate.opsForSet().add(key, stringSet);
         return redisTemplate.opsForSet().members(key);
     }
-
-    //return redisTemplate.opsForSet().members(key);
-
 
 }
