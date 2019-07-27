@@ -19,4 +19,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-freemarker'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
+    // https://mvnrepository.com/artifact/redis.clients/jedis
+    compile group: 'redis.clients', name: 'jedis', version: '3.1.0-m2'
+
+
 }
