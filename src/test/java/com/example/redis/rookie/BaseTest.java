@@ -34,6 +34,7 @@ public class BaseTest {
     Base base;
 
     /**
+     * 测试数据库是否启动成功
      * Failed connecting to host localhost:6379
      * <p>
      * 出现这个异常就请先启动本地redis
@@ -49,8 +50,9 @@ public class BaseTest {
      * 字符串
      */
     @Test
-    public void String() {
-        base.String();
+    public void set() {
+        base.set("hello1", "world1");
+        base.set("hello2", "world2");
     }
 
     /**

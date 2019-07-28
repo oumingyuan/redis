@@ -24,13 +24,13 @@ public class Base {
     /**
      * 字符串
      */
-    void String() {
+    void set(String key, String value) {
         //连接本地的 Redis 服务
         Jedis jedis = new Jedis("localhost");
         //设置 redis 字符串数据
-        jedis.set("hello", "www.hello.com");
+        jedis.set(key, value);
         // 获取存储的数据并输出
-        System.out.println(String.format("redis 存储的字符串为: %s", jedis.get("hello")));
+        System.out.println(String.format("redis 存储的字符串为: %s", jedis.get(key)));
     }
 
     /**
