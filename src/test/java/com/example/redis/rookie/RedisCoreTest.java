@@ -6,12 +6,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -20,6 +19,9 @@ public class RedisCoreTest {
 
     @Autowired
     RedisCore redisCore;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Before
     public void setUp() {
@@ -44,9 +46,12 @@ public class RedisCoreTest {
     @Test
     public void hasKey() {
 
-        System.out.println(redisCore.hasKey(""));
+        System.out.println(redisCore.hasKey("cat"));
 
         System.out.println("has key");
+
+        String cat = redisTemplate.opsForValue().get("hello");
+        System.out.println(cat);
     }
 
     @Test
